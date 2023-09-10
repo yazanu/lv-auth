@@ -10,6 +10,15 @@
             <a class="nav-link active" aria-current="page" href="#">Home</a>
           </li>
           @auth
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Users
+              </a>
+              <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                <li><a class="dropdown-item" href="/users">User Lists</a></li>
+                <li><a class="dropdown-item" href="/permissions">Role & Permissions</a></li>
+              </ul>
+            </li>
             <li class="nav-item">
               <a class="nav-link" href="/products">Products</a>
             </li>  

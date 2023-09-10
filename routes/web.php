@@ -28,4 +28,5 @@ Route::group(['namespace' => 'App\Http\Controllers'], function(){
     Route::post('/login', 'AuthController@login');
 
     Route::resource('products', 'ProductController');
+    Route::resource('permissions', 'PermissionController');
 });
