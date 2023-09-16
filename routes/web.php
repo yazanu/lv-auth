@@ -29,4 +29,5 @@ Route::group(['namespace' => 'App\Http\Controllers'], function(){
 
     Route::resource('products', 'ProductController');
     Route::resource('permissions', 'PermissionController');
+    Route::resource('users', 'UserController');
 });

@@ -3,8 +3,12 @@
 @section('content')
     <div class="container mt-5">
         <h1>Create Product</h1>
+
+        @php
+            $role_permissions = \App\Models\Permission::where('role_id', auth()->user()->role)->pluck('permissions.route_name')->toArray();
+        @endphp
         
-        @if (auth()->user()->role == 'admin' || auth()->user()->role == 'manager')
+        @if (in_array('product.index', $role_permissions) || in_array("product.create", $role_permissions))
         <a href="{{ route('products.create') }}" class="btn btn-success btn-md float-right">Create Product</a>  
         @endif
         
@@ -24,7 +28,7 @@
                         <th scope="col">Name</th>
                         <th scope="col">Price</th>
                         <th scope="col">Description</th>
-                        @if (auth()->user()->role == 'admin' || auth()->user()->role == 'manager')
+                        @if (in_array('product.index', $role_permissions) || in_array("product.create", $role_permissions))
                         <th scope="col">Action</th>
                         @endif
                       </tr>
@@ -36,11 +40,14 @@
                                 <td>{{$product->product_name}}</td>
                                 <td>{{$product->price}}</td>
                                 <td>{!! $product->product_description !!}</td>
-                                @if (auth()->user()->role == 'admin' || auth()->user()->role == 'manager')
+                                @if (in_array('product.index', $role_permissions) || in_array("product.create", $role_permissions))
                                 <td>
                                     <form action="{{ route('products.destroy',$product->id) }}" method="POST">
    
-                                        <a class="btn btn-info" href="{{ route('products.show',$product->id) }}">Show</a>
+                                        @if (in_array('product.show', $role_permissions))
+                                        <a class="btn btn-info" href="{{ route('products.show',$product->id) }}">Show</a> 
+                                        @endif
+                                        
                         
                                         <a class="btn btn-primary" href="{{ route('products.edit',$product->id) }}">Edit</a>
                                         

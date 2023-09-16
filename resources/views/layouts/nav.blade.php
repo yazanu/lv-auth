@@ -1,3 +1,6 @@
+@php
+    $role_permissions = \App\Models\Permission::where('role_id', auth()->user()->role)->pluck('permissions.route_name')->toArray();
+@endphp
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">Laravel</a>
@@ -10,18 +13,26 @@
             <a class="nav-link active" aria-current="page" href="#">Home</a>
           </li>
           @auth
+          @if (in_array('user.index', $role_permissions) || in_array('user.create', $role_permissions))
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Users
               </a>
               <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
                 <li><a class="dropdown-item" href="/users">User Lists</a></li>
-                <li><a class="dropdown-item" href="/permissions">Role & Permissions</a></li>
+                @if (in_array("permission.index", $role_permissions) || in_array("permission.edit", $role_permissions))
+                  <li><a class="dropdown-item" href="/permissions">Role & Permissions</a></li>
+                @endif
+                
               </ul>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/products">Products</a>
-            </li>  
+          @endif
+          @if (in_array('product.index', $role_permissions) || in_array("product.create", $role_permissions))
+          <li class="nav-item">
+            <a class="nav-link" href="/products">Products</a>
+          </li>   
+          @endif
+            
           @endauth
         </ul>
         

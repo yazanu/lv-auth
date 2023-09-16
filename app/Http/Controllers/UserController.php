@@ -3,16 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use DB;
-use App\Models\Permission;
 
-class PermissionController extends Controller
+class UserController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
 
+    
     /**
      * Display a listing of the resource.
      *
@@ -20,7 +15,7 @@ class PermissionController extends Controller
      */
     public function index()
     {
-        return view('roles.index');
+        //
     }
 
     /**
@@ -41,44 +36,7 @@ class PermissionController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
-        $role_id = $request->role_id;
-        $routes = $request->except('_token', 'role_id', 'select_module');
-        
-        $data = [];
-
-        foreach ($routes as $r) {
-            $row['role_id'] = $role_id;
-            $row['route_name'] = $r;
-            array_push($data, $row);
-        }
-
-        $status = true;
-        DB::beginTransaction();
-        try {
-            Permission::where('role_id', $role_id)->delete();
-
-            $ans = Permission::insert($data);
-
-            if(!$ans){
-                DB::rollback();
-                $status = false;
-            }
-
-            DB::commit();
-        } catch (\Exception $e) {
-            DB::rollback();
-            $status = false;
-            dd($e);
-        }
-
-        if($status){
-            session(['success' => 'Permission was saved successfully.']);
-        }else {
-            session(['error' => 'Permission was not saved.']);
-        }
-
-        return view('roles.index', ['role_id' => $role_id]);
+        //
     }
 
     /**

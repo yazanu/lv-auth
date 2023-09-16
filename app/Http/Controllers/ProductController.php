@@ -9,60 +9,54 @@ use Illuminate\Support\Facades\Gate;
 
 class ProductController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('permission:product.index|product.create|proudct.edit|product.show|product.destroy', ['only' => ['index']]);
+        $this->middleware('permission:product.create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:product.show', ['only' => ['show']]);
+        $this->middleware('permission:product.destroy', ['only' => ['destroy']]);
+    }
+    
     public function index()
     {
-        if (Auth::check()) {
-            $products = Product::paginate(10);
-            return view('product.index', compact('products'));    
-        }else {
-            abort(401, 'Unauthorized');
-        }
+        $products = Product::paginate(10);
+        return view('product.index', compact('products'));  
         
     }
 
     public function create()
     {
-        if(Gate::allows('isManager') || Gate::allows('isAdmin')){
-            return view('product.create');
-        }else{
-            abort(401, 'Unauthorized');
-        }
+        // if(Gate::allows('isManager') || Gate::allows('isAdmin')){
+        //     return view('product.create');
+        // }else{
+        //     abort(401, 'Unauthorized');
+        // }
+        return view('product.create');
     }
 
     public function store(Request $request)
     {
-        if(Gate::allows('isManager') || Gate::allows('isAdmin')){
-            $request->validate([
-                'product_name' => 'required',
-                'price' => 'required',
-                'product_description' => 'required',
-            ]);
-            $product = Product::create([
-                'product_name' => $request->product_name,
-                'price' => $request->price,
-                'product_description' => $request->product_description,
-            ]);
-            // dd($product);
-           
-            return redirect()->route('products.index')
-                            ->with('success','Product created successfully.');
-        }else{
-            abort(401, 'Unauthorized');
-        }
         
+        $request->validate([
+            'product_name' => 'required',
+            'price' => 'required',
+            'product_description' => 'required',
+        ]);
+        $product = Product::create([
+            'product_name' => $request->product_name,
+            'price' => $request->price,
+            'product_description' => $request->product_description,
+        ]);
+        // dd($product);
+        
+        return redirect()->route('products.index')
+                        ->with('success','Product created successfully.');
     }
 
     public function edit(Product $product)
     {
-        if (Auth::check()) {
-            if(Gate::allows('isManager') || Gate::allows('isAdmin')){
-                return view('product.edit',compact('product'));
-            }else{
-                abort(401, 'Unauthorized');
-            }
-        } else {
-            abort(401, 'Unauthorized');
-        }
+        return view('product.edit',compact('product'));
     }
 
     public function update(Request $request, Product $product)
@@ -89,10 +83,6 @@ class ProductController extends Controller
 
     public function show(Product $product)
     {
-        if (Auth::check()) {
-            return view('product.show',compact('product'));
-        } else {
-            abort(401, 'Unauthorized');
-        }
+        return view('product.show',compact('product'));
     }
 }
