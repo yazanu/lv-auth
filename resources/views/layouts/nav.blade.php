@@ -34,6 +34,20 @@
           @endif
             
           @endauth
+          <li>
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item dropdown">
+                <select name="language" id="language-option" class="form-control">
+                  <option value="en" @if (\Session::get('locale') == 'en')
+                      selected
+                  @endif>En</option>
+                  <option value="mm" @if (\Session::get('locale') == 'mm')
+                      selected
+                  @endif>MM</option>
+                </select>
+              </li>
+            </ul>
+          </li>
         </ul>
         
         @guest

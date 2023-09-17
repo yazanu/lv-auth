@@ -30,4 +30,9 @@ Route::group(['namespace' => 'App\Http\Controllers'], function(){
     Route::resource('products', 'ProductController');
     Route::resource('permissions', 'PermissionController');
     Route::resource('users', 'UserController');
+
+    Route::get('locale/{locale}', function($locale){
+        Session::put('locale', $locale);
+        return redirect()->back();
+    });
 });

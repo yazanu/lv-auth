@@ -16,5 +16,14 @@
     <main>
         @yield('content')
     </main>
+
+    <script>
+        $(document).ready(function(){
+            $('#language-option').change(function(){
+                // console.log($(this).val());
+                window.location.href = "/locale/" + $(this).val();
+            });
+        })
+    </script>
 </body>
 </html>
